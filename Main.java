@@ -10,6 +10,12 @@ public class Main {
                 "12345-6",
                 0.0
         );
+        
+        ContaBancaria contaDestino = new ContaBancaria(
+                "Gabriel",
+                "98765-4",
+                0.0
+        );
 
         int opcao;
 
@@ -18,6 +24,8 @@ public class Main {
             System.out.println("1- Consultar dados da conta");
             System.out.println("2. Depositar");
             System.out.println("3. Sacar");
+            System.out.println("4. Saldo");
+            System.out.println("5. Transferência (em breve)");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
 
@@ -38,6 +46,16 @@ public class Main {
                 System.out.print("Digite o valor do saque: ");
                 double valorSaque = scanner.nextDouble();
                 conta.sacar(valorSaque);
+                break;
+
+            case 4:
+                conta.exibirSaldo();
+                break;
+
+            case 5:
+                System.out.println("Digite o valor da trasnferência: ");
+                double valorTransferencia = scanner.nextDouble();
+                conta.transferir(valorTransferencia, contaDestino);
                 break;
             
             case 0:
