@@ -18,6 +18,7 @@ public class Main {
         );
 
         int opcao;
+        
 
         do {
             System.out.println("\n --- SISTEMA BANCÁRIO ---");
@@ -25,7 +26,8 @@ public class Main {
             System.out.println("2. Depositar");
             System.out.println("3. Sacar");
             System.out.println("4. Saldo");
-            System.out.println("5. Transferência (em breve)");
+            System.out.println("5. Transferência");
+            System.out.println("6. Resumo de Operações");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
 
@@ -33,7 +35,19 @@ public class Main {
 
         switch (opcao) {
             case 1:
-                conta.exibirDados();
+                int opcaoConta;
+                System.out.println("Escolha a conta para exibir os dados:");
+                System.out.println("1. Conta do titular: " + conta.getTitular());
+                System.out.println("2. Conta do titular: " + contaDestino.getTitular());
+                System.out.print("Digite a opção desejada: ");
+                opcaoConta = scanner.nextInt();
+                if (opcaoConta == 1) {
+                    conta.exibirDados();
+                } else if (opcaoConta == 2) {
+                    contaDestino.exibirDados();
+                } else {
+                    System.out.println("Opção inválida.");
+                }
                 break;
 
             case 2:
@@ -53,9 +67,17 @@ public class Main {
                 break;
 
             case 5:
-                System.out.println("Digite o valor da trasnferência: ");
+                System.out.println("Digite o valor da transferência: ");
                 double valorTransferencia = scanner.nextDouble();
                 conta.transferir(valorTransferencia, contaDestino);
+                break;
+
+            case 6:
+                System.out.println("Resumo de Operações:");
+                System.out.println("Conta do titular: " + conta.getTitular());
+                System.out.println("Quantidade de Depósitos: " + conta.getQuantidadeDepositos());
+                System.out.println("Quantidade de Saques: " +  conta.getQuantidadeSaques());
+                System.out.println("Quantidade de Transferências: " + conta.getQuantidadeTransferencias());
                 break;
             
             case 0:
