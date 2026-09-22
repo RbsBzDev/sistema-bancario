@@ -3,6 +3,7 @@ public class ContaBancaria {
     private String titular;
     private String numeroConta;
     private double saldo;
+    private static final double TAXA_SAQUE = 5.00;
 
     public ContaBancaria(String titular, String numeroConta, double saldoInicial) {
         this.titular = titular;
@@ -29,11 +30,11 @@ public class ContaBancaria {
     public void sacar(double valor) {
         if (valor <= 0) {
             System.out.println("O valor do saque deve ser maior que zero.");
-        } else if (valor > saldo) {
+        } else if (valor > saldo || valor + TAXA_SAQUE > saldo) {
             System.out.println("Saldo insuficiente.");
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
         } else {
-            saldo -= valor;
+            saldo -= valor + TAXA_SAQUE;
             System.out.println("Saque realizado com sucesso.");
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
         }

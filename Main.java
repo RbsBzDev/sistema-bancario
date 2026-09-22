@@ -29,7 +29,7 @@ public class Main {
                 break;
 
             case 2:
-                System.out.print("Digite o valor do depósito");
+                System.out.print("Digite o valor do depósito: ");
                 double valorDeposito = scanner.nextDouble();
                 conta.depositar(valorDeposito);
                 break;
