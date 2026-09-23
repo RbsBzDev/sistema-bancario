@@ -109,7 +109,7 @@ public class ContaBancaria {
             System.out.printf("Transferência de R$ %.2f realizada com sucesso para a conta %s.\n", valor, contaDestino.numeroConta);
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
             quantidadeTransferencias++;
-            String registroTransferencia = String.format("Transferência de R% .2f para a conta %s.", valor, contaDestino.numeroConta);
+            String registroTransferencia = String.format("Transferência de R$ %.2f para a conta %s.", valor, contaDestino.numeroConta);
             historico.add(registroTransferencia);
         }       
     }
