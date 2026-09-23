@@ -28,6 +28,7 @@ public class Main {
             System.out.println("4. Saldo");
             System.out.println("5. Transferência");
             System.out.println("6. Resumo de Operações");
+            System.out.println("7. Extrato");
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
 
@@ -73,11 +74,13 @@ public class Main {
                 break;
 
             case 6:
-                System.out.println("Resumo de Operações:");
-                System.out.println("Conta do titular: " + conta.getTitular());
-                System.out.println("Quantidade de Depósitos: " + conta.getQuantidadeDepositos());
-                System.out.println("Quantidade de Saques: " +  conta.getQuantidadeSaques());
-                System.out.println("Quantidade de Transferências: " + conta.getQuantidadeTransferencias());
+                conta.exibirResumo();
+                contaDestino.exibirResumo();
+                break;
+
+            case 7:
+                conta.exibirExtrato();
+                contaDestino.exibirExtrato();
                 break;
             
             case 0:
