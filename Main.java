@@ -18,7 +18,8 @@ public class Main {
         );
 
         int opcao;
-        
+        ContaBancaria contaSelecionada;
+        ContaBancaria contaDestinoSelecionada;
 
         do {
             System.out.println("\n --- SISTEMA BANCÁRIO ---");
@@ -32,55 +33,73 @@ public class Main {
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
 
-            opcao = scanner.nextInt();
+            opcao = lerInteiro(scanner);
 
         switch (opcao) {
             case 1:
-                int opcaoConta;
-                System.out.println("Escolha a conta para exibir os dados:");
-                System.out.println("1. Conta do titular: " + conta.getTitular());
-                System.out.println("2. Conta do titular: " + contaDestino.getTitular());
-                System.out.print("Digite a opção desejada: ");
-                opcaoConta = scanner.nextInt();
-                if (opcaoConta == 1) {
-                    conta.exibirDados();
-                } else if (opcaoConta == 2) {
-                    contaDestino.exibirDados();
-                } else {
-                    System.out.println("Opção inválida.");
+                contaSelecionada = escolherConta(scanner, conta, contaDestino);
+                if (contaSelecionada != null) {
+                    contaSelecionada.exibirDados();
                 }
                 break;
 
             case 2:
-                System.out.print("Digite o valor do depósito: ");
-                double valorDeposito = scanner.nextDouble();
-                conta.depositar(valorDeposito);
+                contaSelecionada = escolherConta(scanner, conta, contaDestino);
+                if (contaSelecionada != null) {
+                    System.out.println("Digite o valor do depósito: ");
+                    double valorDeposito = lerDouble(scanner);
+                    contaSelecionada.depositar(valorDeposito);
+                }
                 break;
 
             case 3:
-                System.out.print("Digite o valor do saque: ");
-                double valorSaque = scanner.nextDouble();
-                conta.sacar(valorSaque);
+                contaSelecionada = escolherConta(scanner, conta, contaDestino);
+                if (contaSelecionada != null) {
+                    System.out.println("Digite o valor do saque: ");
+                    double valorSaque = lerDouble(scanner);
+                    contaSelecionada.sacar(valorSaque);
+                }
                 break;
 
             case 4:
-                conta.exibirSaldo();
+                contaSelecionada = escolherConta(scanner, conta, contaDestino);
+                if (contaSelecionada != null) {
+                    contaSelecionada.exibirSaldo();
+                }
                 break;
+            
 
             case 5:
-                System.out.println("Digite o valor da transferência: ");
-                double valorTransferencia = scanner.nextDouble();
-                conta.transferir(valorTransferencia, contaDestino);
+                System.out.println("Escolha a conta de origem:");
+                contaSelecionada = escolherConta(scanner, conta, contaDestino);
+                if (contaSelecionada != null) {
+                    System.out.println("Escolha a conta de destino:");
+                    contaDestinoSelecionada = escolherConta(scanner, conta, contaDestino);
+                    
+                if (contaDestinoSelecionada != null) {
+                    if (contaSelecionada == contaDestinoSelecionada) {
+                        System.out.println("A conta de origem e destino devem ser diferentes.");
+                    } else {
+                        System.out.print("Digite o valor da transferência: ");
+                        double valorTransferencia = lerDouble(scanner);
+                        contaSelecionada.transferir(valorTransferencia, contaDestinoSelecionada);
+                    }
+                }
+                }
                 break;
 
             case 6:
-                conta.exibirResumo();
-                contaDestino.exibirResumo();
+                contaSelecionada = escolherConta(scanner, conta, contaDestino);
+                if (contaSelecionada != null) {
+                    contaSelecionada.exibirResumo();
+                }
                 break;
 
             case 7:
-                conta.exibirExtrato();
-                contaDestino.exibirExtrato();
+                contaSelecionada = escolherConta(scanner, conta, contaDestino);
+                if (contaSelecionada != null) {
+                    contaSelecionada.exibirExtrato();
+                }
                 break;
             
             case 0:
@@ -97,6 +116,39 @@ public class Main {
         scanner.close();
 
     }
+    
+    private static ContaBancaria escolherConta(Scanner scanner, ContaBancaria conta, ContaBancaria contaDestino) {
+        System.out.println("Escolha a conta:");
+        System.out.println("1. Conta do titular: " + conta.getTitular());
+        System.out.println("2. Conta do titular: " + contaDestino.getTitular());
+        System.out.println("Digite a opção desejada: ");
+        int opcaoConta = lerInteiro(scanner);
+        if (opcaoConta == 1) {
+            return conta;
+        } else if (opcaoConta == 2) {
+            return contaDestino;
+        } else {
+            System.out.println("Opção inválida.");
+            return null;
+        }
+        
 
+    }
+
+    private static int lerInteiro(Scanner scanner) {
+        while (!scanner.hasNextInt()) {
+            System.out.print("Digite um número inteiro válido: ");
+            scanner.next();
+        }
+        return scanner.nextInt();
+    }
+
+    private static double lerDouble(Scanner scanner) {
+        while (!scanner.hasNextDouble()) {
+            System.out.print("Digite um número válido: ");
+            scanner.next();
+        }
+        return scanner.nextDouble();
+    }
 
 }

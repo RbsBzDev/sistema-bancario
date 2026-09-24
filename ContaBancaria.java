@@ -45,6 +45,9 @@ public class ContaBancaria {
         System.out.printf("Saldo: R$ %.2f%n", saldo);
     }
 
+    private void registrarHistorico(String registro) {
+        this.historico.add(registro);
+    }
     
     public void exibirResumo() {
         System.out.println("Resumo da conta:");
@@ -57,12 +60,14 @@ public class ContaBancaria {
     }
 
     public void exibirExtrato() {
-        System.out.println("Extrato da Conta de :" + titular + ".");
+        System.out.printf("Extrato da conta de: %s%n", titular);
         if (historico.isEmpty()) {
             System.out.println("Nenhuma operação realizada.");
         } else {
+            int numero = 1;
             for (String registro : historico) {
-                System.out.println(registro);
+                System.out.printf("%d. %s%n", numero, registro);
+                numero++;
             }
         }
     }
@@ -75,7 +80,7 @@ public class ContaBancaria {
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
             quantidadeDepositos++;
             String registroDeposito = String.format("Depósito de R$ %.2f.", valor);
-            historico.add(registroDeposito);
+            registrarHistorico(registroDeposito);
         } else {
             System.out.println("O valor do depósito tem que ser maior que zero.");
         }
@@ -94,7 +99,7 @@ public class ContaBancaria {
             System.out.printf("\nSaldo atual: R$ %.2f%n", saldo);
             quantidadeSaques++;
             String registroSaque = String.format("Saque de R$ %.2f. Tarifa de R$ %.2f aplicada.", valor, TAXA_SAQUE);
-            historico.add(registroSaque);
+            registrarHistorico(registroSaque);
         }
     }
     public void transferir(double valor, ContaBancaria contaDestino) {
@@ -109,10 +114,13 @@ public class ContaBancaria {
             System.out.printf("Transferência de R$ %.2f realizada com sucesso para a conta %s.\n", valor, contaDestino.numeroConta);
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
             quantidadeTransferencias++;
-            String registroTransferencia = String.format("Transferência de R$ %.2f para a conta %s.", valor, contaDestino.numeroConta);
-            historico.add(registroTransferencia);
+            String registroTransferencia = String.format("Transferência de R$ %.2f enviada para %s.", valor, contaDestino.numeroConta);
+            registrarHistorico(registroTransferencia);
+            String registroRecebimento = String.format("Transferência recebida de R$ %.2f de %s.", valor, titular);
+            contaDestino.registrarHistorico(registroRecebimento);
         }       
     }
+
 
 
 
