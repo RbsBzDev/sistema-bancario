@@ -8,6 +8,7 @@ public class ContaBancaria {
     private int quantidadeDepositos;
     private int quantidadeSaques;
     private int quantidadeTransferencias;
+    private int quantidadeTransferenciasRecebidas;
     private static final double TAXA_SAQUE = 5.00;
     private ArrayList<String> historico;
 
@@ -49,6 +50,10 @@ public class ContaBancaria {
         this.historico.add(registro);
     }
     
+    private void registrarTransferenciasRecebidas() {
+        quantidadeTransferenciasRecebidas++;
+    }
+
     public void exibirResumo() {
         System.out.println("Resumo da conta:");
         System.out.printf("Titular: %s%n", titular);
@@ -56,7 +61,8 @@ public class ContaBancaria {
         System.out.printf("Saldo atual: R$ %.2f%n", saldo);
         System.out.printf("Quantidade de depósitos: %d%n", quantidadeDepositos);
         System.out.printf("Quantidade de saques: %d%n", quantidadeSaques);
-        System.out.printf("Quantidade de Transferências: %d%n", quantidadeTransferencias);
+        System.out.printf("Quantidade de Transferências enviadas: %d%n", quantidadeTransferencias);
+        System.out.printf("Quantidade de Transferências Recebidas: %d%n ", quantidadeTransferenciasRecebidas);
     }
 
     public void exibirExtrato() {
@@ -118,6 +124,7 @@ public class ContaBancaria {
             registrarHistorico(registroTransferencia);
             String registroRecebimento = String.format("Transferência recebida de R$ %.2f de %s.", valor, titular);
             contaDestino.registrarHistorico(registroRecebimento);
+            contaDestino.registrarTransferenciasRecebidas();
         }       
     }
 
