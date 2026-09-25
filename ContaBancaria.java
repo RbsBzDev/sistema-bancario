@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ContaBancaria {
 
@@ -11,6 +13,9 @@ public class ContaBancaria {
     private int quantidadeTransferencias;
     private int quantidadeTransferenciasRecebidas;
     private static final BigDecimal TAXA_SAQUE = new BigDecimal("5.00");
+    private static final BigDecimal LIMITE_TRANSFERENCIA = new BigDecimal("500.00");
+    private static final DateTimeFormatter FORMATO_DATA_HORA = 
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     private ArrayList<String> historico;
 
 
@@ -23,6 +28,10 @@ public class ContaBancaria {
 
     public String getTitular() {
         return titular;
+    }
+
+    public BigDecimal getSaldo() {
+        return saldo;
     }
 
     public String getQuantidadeDepositos() {
@@ -48,7 +57,10 @@ public class ContaBancaria {
     }
 
     private void registrarHistorico(String registro) {
-        this.historico.add(registro);
+        LocalDateTime dataHoraAtual = LocalDateTime.now();
+        String dataHoraFormatada = dataHoraAtual.format(FORMATO_DATA_HORA);
+        String registroCompleto = dataHoraFormatada + " - " + registro;
+        this.historico.add(registroCompleto);
     }
     
     private void registrarTransferenciasRecebidas() {
@@ -112,6 +124,8 @@ public class ContaBancaria {
     public void transferir(BigDecimal valor, ContaBancaria contaDestino) {
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("O valor da transferência deve ser maior que zero.");
+        } else if (valor.compareTo(LIMITE_TRANSFERENCIA) > 0) {
+            System.out.println("Limite de transferência excedido.");
         } else if (valor.compareTo(saldo) > 0) {
             System.out.println("Saldo insuficiente para realizar a transferência.");
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
