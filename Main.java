@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.math.BigDecimal;
 
 public class Main {
 
@@ -8,13 +9,13 @@ public class Main {
         ContaBancaria conta = new ContaBancaria(
                 "Rubens",
                 "12345-6",
-                0.0
+                BigDecimal.ZERO
         );
         
         ContaBancaria contaDestino = new ContaBancaria(
                 "Gabriel",
                 "98765-4",
-                0.0
+                BigDecimal.ZERO
         );
 
         int opcao;
@@ -47,7 +48,7 @@ public class Main {
                 contaSelecionada = escolherConta(scanner, conta, contaDestino);
                 if (contaSelecionada != null) {
                     System.out.println("Digite o valor do depósito: ");
-                    double valorDeposito = lerDouble(scanner);
+                    BigDecimal valorDeposito = lerValor(scanner);
                     contaSelecionada.depositar(valorDeposito);
                 }
                 break;
@@ -56,7 +57,7 @@ public class Main {
                 contaSelecionada = escolherConta(scanner, conta, contaDestino);
                 if (contaSelecionada != null) {
                     System.out.println("Digite o valor do saque: ");
-                    double valorSaque = lerDouble(scanner);
+                    BigDecimal valorSaque = lerValor(scanner);
                     contaSelecionada.sacar(valorSaque);
                 }
                 break;
@@ -81,7 +82,7 @@ public class Main {
                         System.out.println("A conta de origem e destino devem ser diferentes.");
                     } else {
                         System.out.print("Digite o valor da transferência: ");
-                        double valorTransferencia = lerDouble(scanner);
+                        BigDecimal valorTransferencia = lerValor(scanner);
                         contaSelecionada.transferir(valorTransferencia, contaDestinoSelecionada);
                     }
                 }
@@ -143,12 +144,12 @@ public class Main {
         return scanner.nextInt();
     }
 
-    private static double lerDouble(Scanner scanner) {
-        while (!scanner.hasNextDouble()) {
+    private static BigDecimal lerValor(Scanner scanner) {
+        while (!scanner.hasNextBigDecimal()) {
             System.out.print("Digite um número válido: ");
             scanner.next();
         }
-        return scanner.nextDouble();
+        return scanner.nextBigDecimal();
     }
 
 }

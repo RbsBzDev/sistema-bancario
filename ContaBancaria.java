@@ -1,19 +1,20 @@
 import java.util.ArrayList;
+import java.math.BigDecimal;
 
 public class ContaBancaria {
 
     private String titular;
     private String numeroConta;
-    private double saldo;
+    private BigDecimal saldo;
     private int quantidadeDepositos;
     private int quantidadeSaques;
     private int quantidadeTransferencias;
     private int quantidadeTransferenciasRecebidas;
-    private static final double TAXA_SAQUE = 5.00;
+    private static final BigDecimal TAXA_SAQUE = new BigDecimal("5.00");
     private ArrayList<String> historico;
 
 
-    public ContaBancaria(String titular, String numeroConta, double saldoInicial) {
+    public ContaBancaria(String titular, String numeroConta, BigDecimal saldoInicial) {
         this.titular = titular;
         this.numeroConta = numeroConta;
         this.saldo = saldoInicial;
@@ -79,9 +80,9 @@ public class ContaBancaria {
     }
 
 
-    public void depositar(double valor) {
-        if (valor > 0) {
-            saldo += valor;
+    public void depositar(BigDecimal valor) {
+        if (valor.compareTo(BigDecimal.ZERO) > 0) {
+            saldo = saldo.add(valor);
             System.out.println("Depósito realizado com sucesso.");
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
             quantidadeDepositos++;
@@ -92,14 +93,14 @@ public class ContaBancaria {
         }
     }
 
-    public void sacar(double valor) {
-        if (valor <= 0) {
+    public void sacar(BigDecimal valor) {
+        if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("O valor do saque deve ser maior que zero.");
-        } else if (valor + TAXA_SAQUE > saldo) {
+        } else if (valor.add(TAXA_SAQUE).compareTo(saldo) > 0) {
             System.out.println("Saldo insuficiente.");
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
         } else {
-            saldo -= valor + TAXA_SAQUE;
+            saldo = saldo.subtract(valor.add(TAXA_SAQUE));
             System.out.printf("Saque realizado com sucesso.\n");
             System.out.printf("Uma tarifa de R$ %.2f foi aplicada.", TAXA_SAQUE);
             System.out.printf("\nSaldo atual: R$ %.2f%n", saldo);
@@ -108,15 +109,15 @@ public class ContaBancaria {
             registrarHistorico(registroSaque);
         }
     }
-    public void transferir(double valor, ContaBancaria contaDestino) {
-        if (valor <= 0) {
+    public void transferir(BigDecimal valor, ContaBancaria contaDestino) {
+        if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("O valor da transferência deve ser maior que zero.");
-        } else if (valor > saldo) {
+        } else if (valor.compareTo(saldo) > 0) {
             System.out.println("Saldo insuficiente para realizar a transferência.");
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
         } else {
-            saldo -= valor;
-            contaDestino.saldo += valor;
+            saldo = saldo.subtract(valor);
+            contaDestino.saldo = contaDestino.saldo.add(valor);
             System.out.printf("Transferência de R$ %.2f realizada com sucesso para a conta %s.\n", valor, contaDestino.numeroConta);
             System.out.printf("Saldo atual: R$ %.2f%n", saldo);
             quantidadeTransferencias++;
