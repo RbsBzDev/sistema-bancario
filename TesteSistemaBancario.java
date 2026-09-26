@@ -148,9 +148,165 @@ public class TesteSistemaBancario {
             contaDestino.getQuantidadeRegistrosHistorico()
         );
 
+        System.out.println("\n --- Verificando depósito inválido ---");
         BigDecimal depositoInvalido = new BigDecimal("-50.00");
         conta.depositar(depositoInvalido);
 
+        verificarSaldo(
+            "Rubens após depósito inválido",
+            saldoEsperadoRubens,
+            conta.getSaldo()
+        );
+        
+        verificarQuantidade(
+            "Rubens",
+            "depósitos após depósito inválido",
+            1,
+            conta.getQuantidadeDepositos()
+        );
+
+        verificarQuantidade(
+            "Rubens",
+            "registros no histórico após depósito inválido",
+            3,
+            conta.getQuantidadeRegistrosHistorico()
+        );
+
+
+        System.out.println("\n --- Verificando saque inválido ---");
+        BigDecimal saqueInvalido = BigDecimal.ZERO;
+        conta.sacar(saqueInvalido);
+        
+        verificarSaldo(
+           "Rubens após saque inválido",
+            saldoEsperadoRubens,
+            conta.getSaldo()
+        );
+        
+        verificarQuantidade(
+            "Rubens",
+            "saques esperados após saque inválido",
+            1,
+            conta.getQuantidadeSaques()
+        );
+
+        verificarQuantidade(
+            "Rubens",
+            "registros após sáque inválido",
+            3,
+            conta.getQuantidadeRegistrosHistorico()
+        );
+
+        System.out.println("\n Verificando saque maior que saldo ---");
+        BigDecimal saqueMaiorQueSaldo = new BigDecimal("571.00");
+        conta.sacar(saqueMaiorQueSaldo);
+
+        verificarSaldo(
+            "Rubens após saque maior que saldo",
+            saldoEsperadoRubens,
+            conta.getSaldo()
+        );
+
+        verificarQuantidade(
+            "Rubens",
+            "saques esperados",
+            1,
+            conta.getQuantidadeSaques()
+        );
+
+        verificarQuantidade(
+            "Rubens",
+            "histórico após saque maior que saldo",
+            3,
+            conta.getQuantidadeRegistrosHistorico()
+        );
+
+        ContaBancaria contaComSaldoBaixo = new ContaBancaria(
+            "Ana",
+            "3",
+            new BigDecimal("100.00")
+        );
+
+        BigDecimal transferenciaSemSaldo = new BigDecimal("200.00");
+        contaComSaldoBaixo.transferir(transferenciaSemSaldo, contaDestino);
+
+        BigDecimal saldoEsperadoMaria = new BigDecimal("500.00");
+
+        verificarSaldo(
+            "Ana após transferência sem saldo",
+            new BigDecimal("100.00"),
+            contaComSaldoBaixo.getSaldo()
+        );
+        
+        verificarQuantidade(
+            "Ana",
+            "transferências enviadas após recusa",
+            0,
+            contaComSaldoBaixo.getQuantidadeTransferencias()
+        );
+
+        verificarQuantidade(
+            "Ana",
+            "registros no histórico após recusa",
+            0,
+            contaComSaldoBaixo.getQuantidadeRegistrosHistorico()
+        );
+
+        verificarSaldo(
+            "Gabriel após transferência sem saldo",
+            saldoEsperadoGabriel,
+            contaDestino.getSaldo()
+        );
+
+        verificarQuantidade(
+            "Gabriel",
+            "transferências recebidas após recusa",
+            1,
+            contaDestino.getQuantidadeTransferenciasRecebidas()
+        );
+
+        verificarQuantidade(
+            "Gabriel",
+            "registros no histórico após recusa",
+            1,
+            contaDestino.getQuantidadeRegistrosHistorico()
+        );
+
+
+        ContaBancaria contaMaria = new ContaBancaria(
+            "Maria",
+            "4",
+            new BigDecimal("500.00")
+        );
+
+        contaMaria.transferir(transferenciaSemSaldo, contaMaria);
+
+        verificarSaldo(
+            "Maria",
+            saldoEsperadoMaria,
+            contaMaria.getSaldo()
+        );
+
+        verificarQuantidade(
+            "Maria",
+            "transferencias enviadas",
+            0,
+            contaMaria.getQuantidadeTransferencias()
+        );
+
+        verificarQuantidade(
+            "Maria",
+            "transferencias recebidas",
+            0,
+            contaMaria.getQuantidadeTransferenciasRecebidas()
+        );
+
+        verificarQuantidade(
+            "Maria",
+            "registros no historico",
+            0,
+            contaMaria.getQuantidadeRegistrosHistorico()
+        );
 
         conta.exibirSaldo();
         contaDestino.exibirSaldo();

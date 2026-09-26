@@ -130,7 +130,9 @@ public class ContaBancaria {
         }
     }
     public void transferir(BigDecimal valor, ContaBancaria contaDestino) {
-        if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+        if (this == contaDestino) {
+            System.out.println("Não é possível transferir para a mesma conta");
+        }else if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             System.out.println("O valor da transferência deve ser maior que zero.");
         } else if (valor.compareTo(LIMITE_TRANSFERENCIA) > 0) {
             System.out.println("Limite de transferência excedido.");
