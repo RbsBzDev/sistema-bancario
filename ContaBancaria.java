@@ -34,16 +34,24 @@ public class ContaBancaria {
         return saldo;
     }
 
-    public String getQuantidadeDepositos() {
-        return String.valueOf(quantidadeDepositos);
+    public int getQuantidadeDepositos() {
+        return quantidadeDepositos;
     }
 
-    public String getQuantidadeSaques() {
-        return String.valueOf(quantidadeSaques);
+    public int getQuantidadeSaques() {
+        return quantidadeSaques;
     }
 
-    public String getQuantidadeTransferencias() {
-        return String.valueOf(quantidadeTransferencias);
+    public int getQuantidadeTransferencias() {
+        return quantidadeTransferencias;
+    }
+
+    public int getQuantidadeTransferenciasRecebidas() {
+        return quantidadeTransferenciasRecebidas;
+    }
+
+    public int getQuantidadeRegistrosHistorico() {
+        return historico.size();
     }
 
     public void exibirSaldo() {
