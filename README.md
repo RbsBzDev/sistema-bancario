@@ -22,9 +22,22 @@ Durante o desenvolvimento, fui adicionando regras bancárias, histórico de oper
 - Validação de entradas para evitar erros ao digitar texto no lugar de números;
 - Uso de `BigDecimal` para trabalhar com valores monetários.
 
+## Classe Banco
+
+Também comecei a separar a responsabilidade de administrar contas em uma classe chamada `Banco`.
+
+Até aqui, ela consegue:
+
+- Guardar contas em um `ArrayList<ContaBancaria>`;
+- Adicionar novas contas;
+- Informar a quantidade de contas cadastradas;
+- Buscar uma conta pelo número;
+- Recusar uma nova conta quando o número já existe;
+- Informar se o cadastro foi aceito ou recusado usando `boolean`.
+
 ## Testes criados
 
-Também foi criada a classe `TesteSistemaBancario.java` para testar as regras principais sem depender do menu.
+Foi criada a classe `TesteSistemaBancario.java` para testar as regras principais sem depender do menu.
 
 Atualmente, os testes verificam:
 
@@ -36,12 +49,16 @@ Atualmente, os testes verificam:
 - Transferência acima do limite;
 - Transferência sem saldo suficiente, sem alterar origem ou destino;
 - Tentativa de transferência para a própria conta;
-- Manutenção de saldo, contadores e histórico após operações recusadas.
+- Manutenção de saldo, contadores e histórico após operações recusadas;
+- Cadastro e busca de conta pelo número;
+- Busca de número inexistente;
+- Preparação do teste para impedir números de conta duplicados.
 
 ## Estrutura do projeto
 
 - `Main.java`: contém o menu e a leitura das opções digitadas pelo usuário.
 - `ContaBancaria.java`: contém os dados, regras e operações de cada conta.
+- `Banco.java`: administra a lista de contas e concentra regras de cadastro e busca.
 - `TesteSistemaBancario.java`: executa testes das regras do sistema sem depender do menu.
 
 ## Opções do menu
@@ -60,21 +77,22 @@ Atualmente, os testes verificam:
 Para executar o sistema pelo menu:
 
 ```bash
-javac ContaBancaria.java Main.java
+javac ContaBancaria.java Banco.java Main.java
 java Main
 ```
 
 Para executar os testes:
 
 ```bash
-javac ContaBancaria.java TesteSistemaBancario.java
+javac ContaBancaria.java Banco.java TesteSistemaBancario.java
 java TesteSistemaBancario
 ```
 
 ## Próximos passos de estudo
 
+- Finalizar e conferir o teste de número de conta duplicado;
 - Organizar os cenários de teste em métodos menores;
-- Criar uma classe para controlar várias contas do banco;
+- Integrar a classe `Banco` ao menu principal;
 - Cadastrar novas contas pelo menu;
 - Criar tipos diferentes de conta, como conta corrente e poupança;
 - Salvar contas e extratos em arquivo.

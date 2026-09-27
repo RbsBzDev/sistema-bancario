@@ -30,6 +30,10 @@ public class ContaBancaria {
         return titular;
     }
 
+    public String getNumeroConta() {
+        return numeroConta;
+    }
+
     public BigDecimal getSaldo() {
         return saldo;
     }

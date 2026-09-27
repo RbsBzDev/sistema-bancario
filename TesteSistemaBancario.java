@@ -221,65 +221,31 @@ public class TesteSistemaBancario {
             conta.getQuantidadeRegistrosHistorico()
         );
 
-        ContaBancaria contaComSaldoBaixo = new ContaBancaria(
-            "Ana",
-            "3",
-            new BigDecimal("100.00")
-        );
+        testarTransferenciaSemSaldo();
 
-        BigDecimal transferenciaSemSaldo = new BigDecimal("200.00");
-        contaComSaldoBaixo.transferir(transferenciaSemSaldo, contaDestino);
+        testarTransferenciaParaMesmaConta();
 
-        BigDecimal saldoEsperadoMaria = new BigDecimal("500.00");
+        testarCadastroDeConta();
 
-        verificarSaldo(
-            "Ana após transferência sem saldo",
-            new BigDecimal("100.00"),
-            contaComSaldoBaixo.getSaldo()
-        );
+        conta.exibirSaldo();
+        contaDestino.exibirSaldo();
+
+        conta.exibirExtrato();
+        contaDestino.exibirExtrato();
         
-        verificarQuantidade(
-            "Ana",
-            "transferências enviadas após recusa",
-            0,
-            contaComSaldoBaixo.getQuantidadeTransferencias()
-        );
+    }
 
-        verificarQuantidade(
-            "Ana",
-            "registros no histórico após recusa",
-            0,
-            contaComSaldoBaixo.getQuantidadeRegistrosHistorico()
-        );
-
-        verificarSaldo(
-            "Gabriel após transferência sem saldo",
-            saldoEsperadoGabriel,
-            contaDestino.getSaldo()
-        );
-
-        verificarQuantidade(
-            "Gabriel",
-            "transferências recebidas após recusa",
-            1,
-            contaDestino.getQuantidadeTransferenciasRecebidas()
-        );
-
-        verificarQuantidade(
-            "Gabriel",
-            "registros no histórico após recusa",
-            1,
-            contaDestino.getQuantidadeRegistrosHistorico()
-        );
-
-
+    private static void testarTransferenciaParaMesmaConta() {
         ContaBancaria contaMaria = new ContaBancaria(
             "Maria",
             "4",
             new BigDecimal("500.00")
         );
 
-        contaMaria.transferir(transferenciaSemSaldo, contaMaria);
+        BigDecimal valorTransferenciaParaMesmaConta = new BigDecimal("200.00");
+        BigDecimal saldoEsperadoMaria = new BigDecimal("500.00");
+
+        contaMaria.transferir(valorTransferenciaParaMesmaConta, contaMaria);
 
         verificarSaldo(
             "Maria",
@@ -307,14 +273,114 @@ public class TesteSistemaBancario {
             0,
             contaMaria.getQuantidadeRegistrosHistorico()
         );
-
-        conta.exibirSaldo();
-        contaDestino.exibirSaldo();
-
-        conta.exibirExtrato();
-        contaDestino.exibirExtrato();
-        
     }
+
+    private static void testarTransferenciaSemSaldo() {
+
+        BigDecimal saldoAna = new BigDecimal("100.00");
+        BigDecimal transferenciaSemSaldo = new BigDecimal("200.00");
+
+        ContaBancaria contaAna = new ContaBancaria(
+            "Ana",
+            "1",
+            new BigDecimal("100.00")
+        );
+
+        ContaBancaria contaGabriel = new ContaBancaria(
+            "Gabriel",
+            "2",
+            BigDecimal.ZERO
+        );
+
+        contaAna.transferir(transferenciaSemSaldo, contaGabriel);
+
+        verificarSaldo(
+            "Ana",
+            saldoAna,
+            contaAna.getSaldo()
+        );
+
+        verificarQuantidade(
+            "Ana",
+            "transferência enviada",
+            0,
+            contaAna.getQuantidadeTransferencias()
+        );
+
+        verificarQuantidade(
+            "Ana",
+            "registro no histórico",
+            0,
+            contaAna.getQuantidadeRegistrosHistorico()
+        );
+
+        verificarSaldo(
+            "Gabriel",
+            BigDecimal.ZERO,
+            contaGabriel.getSaldo()
+        );
+
+        verificarQuantidade(
+            "Gabriel",
+            "tranferencia recebida",
+            0,
+            contaGabriel.getQuantidadeTransferenciasRecebidas()
+        );
+
+        verificarQuantidade(
+            "Gabriel",
+            "registro no histórico",
+            0,
+            contaGabriel.getQuantidadeRegistrosHistorico()
+        );
+    }
+
+    private static void testarCadastroDeConta() {
+
+        Banco banco = new Banco();
+        ContaBancaria contaTeste = new ContaBancaria(
+            "Teste",
+            "10",
+            BigDecimal.ZERO
+        );
+
+        ContaBancaria segundaConta = new ContaBancaria(
+            "Segunda",
+            "10",
+            BigDecimal.ZERO
+        );
+        
+        boolean primeiraContaCadastrada = banco.adicionarConta(contaTeste);
+        boolean segundaContaCadastrada = banco.adicionarConta(segundaConta);
+
+
+
+        ContaBancaria contaEncontrada = banco.buscarContaPorNumero("10");
+
+        if (contaEncontrada == contaTeste) {
+            System.out.println("Conta encontrada.");
+        } else {
+            System.out.println("Conta não encontrada");
+        }
+
+        ContaBancaria contaNaoEncontrada = banco.buscarContaPorNumero("99");
+
+        if (contaNaoEncontrada == null) {
+            System.out.println("A conta não foi encontrada");
+        } else {
+            System.out.println("O teste falhou");
+        }
+
+
+        verificarQuantidade(
+            "banco",
+            "contas cadastradas",
+            1,
+            banco.getQuantidadeContas()
+        );
+    }
+
+    
 
     private static void verificarSaldo(
         String nomeConta,
